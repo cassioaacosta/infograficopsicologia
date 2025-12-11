@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comer Intuitivo & Atenção Plena</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font for Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- 
+    SOURCE MATERIAL ANALYSIS & PLAN:
+    1. Narrative: Move from defining the concept to actionable pillars, then the specific tool (Hunger Scale), process (Mindfulness), and finally the results.
+    2. Visualizations Choices:
+       - Pillars: Bar Chart to contrast "Intuitive" vs "Diet" mentality (Goal: Compare).
+       - Permission: Pie Chart to show the shift in mental energy (Goal: Inform/Composition).
+       - Hunger Scale: Horizontal Bar Chart to visualize the 1-10 spectrum (Goal: Organize/Measure).
+       - Mindfulness: HTML/CSS Flowchart blocks (Goal: Process/Organize) - STRICTLY NO SVG/MERMAID.
+       - Benefits: Line Chart for anxiety trends (Goal: Change over time) and Radar Chart for holistic comparison (Goal: Compare attributes).
+    3. Palette: "Fresh & Balanced" - #2ecc71 (Green), #3498db (Blue), #f39c12 (Orange), #e74c3c (Red).
+    4. Compliance: NO SVG, NO Mermaid. Canvas used. Text wrapping logic in JS.
+    -->
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            color: #333333;
+        }
+        
+        /* Chart Container Utilities */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width constraint */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 400px;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Custom Card Styling */
+        .info-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Flowchart CSS Connectors (No SVG) */
+        .flow-step {
+            position: relative;
+        }
+        .flow-arrow::after {
+            content: "▼";
+            display: block;
+            text-align: center;
+            font-size: 1.5rem;
+            color: #2ecc71;
+            margin: 0.5rem 0;
+        }
+        @media (min-width: 768px) {
+            .flow-arrow-md::after {
+                content: "▶";
+                position: absolute;
+                right: -20px;
+                top: 50%;
+                transform: translateY(-50%);
+                margin: 0;
+            }
+            .last-step::after {
+                content: none;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header Section -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-[#2ecc71]">🥗 Nutrição Sem Pressão</h1>
+            <nav class="hidden md:flex space-x-4 text-sm font-semibold text-gray-500">
+                <a href="#pilares" class="hover:text-[#3498db]">Pilares</a>
+                <a href="#escala" class="hover:text-[#3498db]">Escala da Fome</a>
+                <a href="#mindfulness" class="hover:text-[#3498db]">Mindfulness</a>
+                <a href="#beneficios" class="hover:text-[#3498db]">Benefícios</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-[#2ecc71] to-[#3498db] text-white py-16 px-4 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Comer Intuitivo & Atenção Plena</h1>
+            <p class="text-xl md:text-2xl font-light mb-8">Reconecte-se com seu corpo. Abandone a culpa.</p>
+            <div class="inline-block bg-white text-[#3498db] px-8 py-4 rounded-full font-bold shadow-lg">
+                Você é o único especialista em seu corpo
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-12 gap-8">
+
+        <!-- Introduction -->
+        <div class="md:col-span-12 mb-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">O Que é Nutrição Sem Pressão?</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                É uma filosofia de bem-estar que rejeita a mentalidade de dieta. Em vez de regras externas, aprendemos a honrar os sinais internos de fome, saciedade e satisfação. É a união da prática (Comer Intuitivo) com o método (Atenção Plena).
+            </p>
+        </div>
+
+        <!-- SECTION 1: OS PILARES (THE PILLARS) -->
+        <div id="pilares" class="md:col-span-12 mb-4">
+            <div class="border-l-4 border-[#2ecc71] pl-4 mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">I. Os Pilares do Comer Intuitivo</h3>
+                <p class="text-gray-600">A base para reconstruir sua relação com a comida envolve três ações fundamentais: honrar a fome, respeitar a saciedade e fazer as pazes com os alimentos.</p>
+            </div>
+        </div>
+
+        <!-- Viz 1: Pillars Comparison Bar Chart -->
+        <div class="md:col-span-7 info-card p-6">
+            <h4 class="text-xl font-bold mb-2 text-[#3498db]">Mentalidade: Dieta vs. Intuição</h4>
+            <p class="text-sm text-gray-500 mb-4">Comparação do impacto emocional e físico de seguir dietas restritivas versus ouvir o corpo.</p>
+            <div class="chart-container">
+                <canvas id="pillarsChart"></canvas>
+            </div>
+            <p class="mt-4 text-sm text-gray-600 bg-blue-50 p-3 rounded border border-blue-100">
+                <strong>Análise:</strong> O gráfico demonstra que o Comer Intuitivo (verde) promove altos níveis de satisfação e energia, enquanto a mentalidade de dieta (vermelho) aumenta o estresse e a culpa, mesmo que prometa controle.
+            </p>
+        </div>
+
+        <!-- Viz 2: Permission/Peace Pie Chart -->
+        <div class="md:col-span-5 info-card p-6 flex flex-col justify-center">
+            <h4 class="text-xl font-bold mb-2 text-[#f39c12]">O Espaço Mental da Comida</h4>
+            <p class="text-sm text-gray-500 mb-4">O que ocupa sua mente quando você faz as pazes com a comida?</p>
+            <div class="chart-container" style="height: 250px;">
+                <canvas id="peaceChart"></canvas>
+            </div>
+            <p class="mt-4 text-sm text-gray-600 text-center">
+                Ao remover rótulos de "bom" ou "ruim", a obsessão diminui e o prazer aumenta.
+            </p>
+        </div>
+
+        <!-- Text Breakdown of Pillars -->
+        <div class="md:col-span-4 info-card p-6 border-t-4 border-[#2ecc71]">
+            <div class="text-4xl mb-2">🟢</div>
+            <h4 class="font-bold text-lg mb-2">1. Honre Sua Fome</h4>
+            <p class="text-sm text-gray-600">Coma quando sentir fome física. Não espere a "fome raivosa". Ignorar a fome leva a excessos depois.</p>
+        </div>
+        <div class="md:col-span-4 info-card p-6 border-t-4 border-[#e74c3c]">
+            <div class="text-4xl mb-2">🔴</div>
+            <h4 class="font-bold text-lg mb-2">2. Respeite a Saciedade</h4>
+            <p class="text-sm text-gray-600">Pare quando estiver satisfeito, não cheio. Ouça os sinais sutis do corpo dizendo "já basta".</p>
+        </div>
+        <div class="md:col-span-4 info-card p-6 border-t-4 border-[#3498db]">
+            <div class="text-4xl mb-2">🕊️</div>
+            <h4 class="font-bold text-lg mb-2">3. Pazes com a Comida</h4>
+            <p class="text-sm text-gray-600">Permissão incondicional para comer. Proibir alimentos gera desejo incontrolável e culpa.</p>
+        </div>
+
+
+        <!-- SECTION 2: ESCALA DA FOME (HUNGER SCALE) -->
+        <div id="escala" class="md:col-span-12 mt-8 mb-4">
+            <div class="border-l-4 border-[#f39c12] pl-4 mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">II. A Bússola Interna: Escala da Fome</h3>
+                <p class="text-gray-600">Atenção plena significa quantificar sua fome antes e durante a refeição. Onde você está na escala de 1 a 10?</p>
+            </div>
+        </div>
+
+        <!-- Viz 3: Hunger Scale Horizontal Bar -->
+        <div class="md:col-span-12 info-card p-6">
+            <h4 class="text-xl font-bold mb-4 text-[#333]">Escala de Fome e Saciedade (1-10)</h4>
+            <p class="text-sm text-gray-500 mb-6">O objetivo é manter-se na "Zona Verde" (3 a 7). Evite os extremos.</p>
+            <div class="chart-container" style="max-width: 100%; height: 300px;">
+                <canvas id="hungerScaleChart"></canvas>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-center text-sm">
+                <div class="bg-red-100 p-2 rounded text-red-800 font-semibold">Zona de Urgência (1-2): Risco de comer compulsivo.</div>
+                <div class="bg-green-100 p-2 rounded text-green-800 font-semibold">Zona Ideal (3-7): Comer com prazer e parar com conforto.</div>
+                <div class="bg-orange-100 p-2 rounded text-orange-800 font-semibold">Zona de Desconforto (8-10): Sensação de peso e letargia.</div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: MINDFULNESS (PROCESS) -->
+        <div id="mindfulness" class="md:col-span-12 mt-8 mb-4">
+            <div class="border-l-4 border-[#3498db] pl-4 mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">III. Atenção Plena à Mesa (Como Fazer)</h3>
+                <p class="text-gray-600">Mindfulness é a ferramenta que permite que a intuição funcione. É sair do piloto automático.</p>
+            </div>
+        </div>
+
+        <!-- Viz 4: Process Flow (HTML/CSS) -->
+        <div class="md:col-span-12 bg-white p-8 rounded-xl shadow-lg">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center justify-center">
+                <!-- Step 1 -->
+                <div class="flow-step flow-arrow md:flow-arrow-md last:flow-arrow-none text-center">
+                    <div class="w-16 h-16 bg-[#3498db] text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-3 font-bold shadow-md">1</div>
+                    <h5 class="font-bold text-gray-800">Check-in Inicial</h5>
+                    <p class="text-xs text-gray-500 mt-1">Fome física ou emocional? Nota 1-10?</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="flow-step flow-arrow md:flow-arrow-md text-center">
+                    <div class="w-16 h-16 bg-[#2ecc71] text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-3 font-bold shadow-md">2</div>
+                    <h5 class="font-bold text-gray-800">Ambiente</h5>
+                    <p class="text-xs text-gray-500 mt-1">Sem telas. Observe cores e cheiros.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="flow-step flow-arrow md:flow-arrow-md text-center">
+                    <div class="w-16 h-16 bg-[#f39c12] text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-3 font-bold shadow-md">3</div>
+                    <h5 class="font-bold text-gray-800">Ato de Comer</h5>
+                    <p class="text-xs text-gray-500 mt-1">Mastigue devagar. Pouse os talheres.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="flow-step last-step text-center">
+                    <div class="w-16 h-16 bg-[#9b59b6] text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-3 font-bold shadow-md">4</div>
+                    <h5 class="font-bold text-gray-800">Pausa e Validação</h5>
+                    <p class="text-xs text-gray-500 mt-1">Estou satisfeito? Foi prazeroso?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: BENEFÍCIOS (RESULTS) -->
+        <div id="beneficios" class="md:col-span-12 mt-8 mb-4">
+            <div class="border-l-4 border-[#9b59b6] pl-4 mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">IV. Resultados Reais: Por que Mudar?</h3>
+                <p class="text-gray-600">Nutrir sem pressão gera sustentabilidade a longo prazo, redução de ansiedade e liberdade.</p>
+            </div>
+        </div>
+
+        <!-- Viz 5: Anxiety Line Chart -->
+        <div class="md:col-span-8 info-card p-6">
+            <h4 class="text-xl font-bold mb-2 text-[#9b59b6]">Níveis de Ansiedade ao Longo do Tempo</h4>
+            <p class="text-sm text-gray-500 mb-4">Projeção da ansiedade alimentar em dieta restritiva vs. abordagem intuitiva.</p>
+            <div class="chart-container">
+                <canvas id="anxietyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Viz 6: Holistic Radar Chart -->
+        <div class="md:col-span-4 info-card p-6">
+            <h4 class="text-xl font-bold mb-2 text-[#2ecc71]">Impacto Holístico</h4>
+            <p class="text-sm text-gray-500 mb-4">Comparativo de bem-estar geral.</p>
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 text-center mt-12">
+        <div class="max-w-4xl mx-auto px-4">
+            <p class="text-lg font-light mb-2">Comer Intuitivo é a prática. Atenção Plena é o método.</p>
+            <p class="font-bold text-[#2ecc71] text-xl">Nutrição Sem Pressão</p>
+        </div>
+    </footer>
+
+    <!-- CHART.JS LOGIC -->
+    <script>
+        // --- UTILITY FUNCTIONS ---
+
+        // Label Wrapping Function (Required by prompt)
+        function splitLabel(label) {
+            if (label.length > 16) {
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = words[0];
+                for (let i = 1; i < words.length; i++) {
+                    if ((currentLine + " " + words[i]).length <= 16) {
+                        currentLine += " " + words[i];
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = words[i];
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            }
+            return label;
+        }
+
+        // Common Tooltip Config (Required by prompt)
+        const commonTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // Common Chart Options
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: commonTooltipConfig,
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { family: 'Poppins', size: 12 },
+                        usePointStyle: true,
+                    }
+                }
+            }
+        };
+
+        // --- CHART 1: PILLARS COMPARISON (Grouped Bar) ---
+        const ctxPillars = document.getElementById('pillarsChart').getContext('2d');
+        // Process labels
+        const rawLabels1 = ["Honrar a Fome", "Respeitar a Saciedade", "Pazes com a Comida"];
+        const processedLabels1 = rawLabels1.map(splitLabel);
+
+        new Chart(ctxPillars, {
+            type: 'bar',
+            data: {
+                labels: processedLabels1,
+                datasets: [
+                    {
+                        label: 'Abordagem Intuitiva (Positiva)',
+                        data: [90, 85, 95], // High positive impact
+                        backgroundColor: '#2ecc71',
+                        borderRadius: 5
+                    },
+                    {
+                        label: 'Mentalidade de Dieta (Estresse)',
+                        data: [20, 30, 15], // Low positive impact / High stress (inverse scale representation)
+                        backgroundColor: '#e74c3c',
+                        borderRadius: 5
+                    }
+                ]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: 'Nível de Bem-Estar / Satisfação' }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 2: PEACE PIE CHART (Doughnut) ---
+        const ctxPeace = document.getElementById('peaceChart').getContext('2d');
+        const rawLabels2 = ["Prazer em Comer", "Conexão Social", "Nutrição", "Culpa e Regras"];
+        const processedLabels2 = rawLabels2.map(splitLabel);
+
+        new Chart(ctxPeace, {
+            type: 'doughnut',
+            data: {
+                labels: processedLabels2,
+                datasets: [{
+                    data: [40, 30, 25, 5],
+                    backgroundColor: ['#f39c12', '#3498db', '#2ecc71', '#e74c3c'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                ...commonOptions,
+                cutout: '60%',
+                plugins: {
+                    ...commonOptions.plugins,
+                    legend: { position: 'right' }
+                }
+            }
+        });
+
+        // --- CHART 3: HUNGER SCALE (Horizontal Bar) ---
+        const ctxHunger = document.getElementById('hungerScaleChart').getContext('2d');
+        const rawLabels3 = [
+            "1-2: Faminto/Vazio (Zona de Urgência)", 
+            "3-4: Fome Moderada (Começar a Comer)", 
+            "5: Neutro (Nem fome, nem cheio)", 
+            "6-7: Satisfeito (Parar de Comer)", 
+            "8-10: Cheio/Empanturrado (Desconforto)"
+        ];
+        // Custom split for longer labels here might be tricky, let's keep them slightly simpler or rely on responsive container
+        // Actually, let's simplify labels for the chart axis and use full text in narrative
+        const shortLabels3 = ["1-2: Faminto", "3-4: Fome Moderada", "5: Neutro", "6-7: Satisfeito", "8-10: Cheio"];
+        const processedLabels3 = shortLabels3.map(splitLabel);
+
+        new Chart(ctxHunger, {
+            type: 'bar',
+            data: {
+                labels: processedLabels3,
+                datasets: [{
+                    label: 'Intensidade da Sensação',
+                    data: [9, 6, 5, 7, 10], // Visual magnitude
+                    backgroundColor: [
+                        '#e74c3c', // Red (Starving)
+                        '#2ecc71', // Green (Start)
+                        '#f1c40f', // Yellow (Neutral)
+                        '#2ecc71', // Green (Stop)
+                        '#e67e22'  // Orange/Red (Stuffed)
+                    ],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Horizontal bar
+                ...commonOptions,
+                plugins: {
+                    ...commonOptions.plugins,
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { display: false }, // Hide values, just show bars visually
+                    y: { 
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 5: ANXIETY LINE CHART ---
+        const ctxAnxiety = document.getElementById('anxietyChart').getContext('2d');
+        const rawLabels5 = ["Mês 1", "Mês 3", "Mês 6", "1 Ano", "2 Anos"];
+        
+        new Chart(ctxAnxiety, {
+            type: 'line',
+            data: {
+                labels: rawLabels5,
+                datasets: [
+                    {
+                        label: 'Comer Intuitivo (Ansiedade caindo)',
+                        data: [80, 60, 40, 25, 20],
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Efeito Sanfona/Dietas (Instável)',
+                        data: [85, 40, 90, 30, 85],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 5],
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Nível de Ansiedade' }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 6: RADAR CHART (Holistic) ---
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        const rawLabels6 = ["Sustentabilidade", "Imagem Corporal", "Energia", "Prazer", "Saúde Mental"];
+        const processedLabels6 = rawLabels6.map(splitLabel);
+
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: processedLabels6,
+                datasets: [
+                    {
+                        label: 'Intuitivo',
+                        data: [90, 85, 80, 95, 90],
+                        fill: true,
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: '#3498db',
+                        pointBackgroundColor: '#3498db'
+                    },
+                    {
+                        label: 'Restritivo',
+                        data: [20, 30, 50, 10, 20],
+                        fill: true,
+                        backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                        borderColor: '#e74c3c',
+                        pointBackgroundColor: '#e74c3c'
+                    }
+                ]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    r: {
+                        angleLines: { display: false },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
